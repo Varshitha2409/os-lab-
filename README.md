@@ -113,10 +113,8 @@ int main() {
     int i, j, temp;
     float wtavg = 0, tatavg = 0;
     int p[20];
-
     printf("Enter the number of processes: ");
     scanf("%d", &n);
-
     for (i = 0; i < n; i++) {
         p[i] = i + 1;
         printf("\nEnter Arrival Time for Process %d: ", i + 1);
@@ -124,7 +122,6 @@ int main() {
         printf("Enter Burst Time for Process %d: ", i + 1);
         scanf("%d", &bt[i]);
     }
-
     for (i = 0; i < n - 1; i++) {
         for (j = i + 1; j < n; j++) {
             if (at[i] > at[j]) {
@@ -134,40 +131,32 @@ int main() {
             }
         }
     }
-
     ct[0] = at[0] + bt[0];
     tat[0] = ct[0] - at[0];
     wt[0] = tat[0] - bt[0];
-
     for (i = 1; i < n; i++) {
         if (at[i] > ct[i - 1])
             ct[i] = at[i] + bt[i];  
         else
             ct[i] = ct[i - 1] + bt[i];
-
         tat[i] = ct[i] - at[i];
         wt[i] = tat[i] - bt[i];
     }
-
     for (i = 0; i < n; i++) {
         wtavg += wt[i];
         tatavg += tat[i];
     }
-
     printf("\n------------------------------------------------------------");
     printf("\nProcess\tAT\tBT\tCT\tTAT\tWT");
     printf("\n------------------------------------------------------------");
     for (i = 0; i < n; i++) {
         printf("\nP%d\t%d\t%d\t%d\t%d\t%d", p[i], at[i], bt[i], ct[i], tat[i], wt[i]);
     }
-
     printf("\n------------------------------------------------------------");
     printf("\nAverage Turnaround Time = %.2f", tatavg / n);
     printf("\nAverage Waiting Time = %.2f\n", wtavg / n);
-
     return 0;
 }
-
 Prg 4: Dining philosopher
 
 #include<stdio.h>
@@ -185,7 +174,6 @@ int main()
     for(i=0;i<tph;i++)
     { 
         philname[i] = (i); status[i]=1; 
-        
     } 
     printf("How many are hungry : "); 
     scanf("%d", &howhung);
@@ -199,8 +187,7 @@ int main()
             for(i=0;i<howhung;i++)
             {
                 printf("Enter philosopher %d position: ",(i+1)); 
-                scanf("%d", &hu[i]); status[hu[i]]=2; 
-                
+                scanf("%d", &hu[i]); status[hu[i]]=2;   
             } 
             do 
             { 
@@ -257,7 +244,6 @@ for(i=0;i<howhung;i++)
                 if((hu[x]!=t)&&(hu[x]!=r))
                 printf("\nP %d is waiting", philname[hu[x]]);
                 } 
-            
      } 
     }
     }
@@ -304,21 +290,17 @@ int n, r;
 void input() {
     int i, j;
     printf("Enter number of processes: ");
-    scanf("%d", &n);
-
+    scanf("%d", &
     printf("Enter number of resources: ");
     scanf("%d", &r);
-
     printf("Enter Max matrix:\n");
     for(i=0;i<n;i++)
         for(j=0;j<r;j++)
             scanf("%d", &max[i][j]);
-
     printf("Enter Allocation matrix:\n");
     for(i=0;i<n;i++)
         for(j=0;j<r;j++)
             scanf("%d", &alloc[i][j]);
-
     printf("Enter Available resources:\n");
     for(j=0;j<r;j++)
         scanf("%d", &avail[j]);
@@ -329,16 +311,12 @@ void display() {
     printf("\nProcess\tAlloc\tMax\tAvail\n");
     for(i=0;i<n;i++) {
         printf("P%d\t", i+1);
-
         for(j=0;j<r;j++) printf("%d ", alloc[i][j]);
         printf("\t");
-
         for(j=0;j<r;j++) printf("%d ", max[i][j]);
         printf("\t");
-
         if(i==0)
             for(j=0;j<r;j++) printf("%d ", avail[j]);
-
         printf("\n");
     }
 }
@@ -346,7 +324,6 @@ void display() {
 void calculate() {
     int finish[100]={0}, safeSeq[100];
     int i,j,k, count=0, found;
-
     // Need matrix
     printf("\nNeed Matrix:\n");
     for(i=0;i<n;i++){
@@ -849,14 +826,12 @@ void main()
             d[i] = atr[i] - h;
         else
             d[i] = atr[i] - atr[i - 1];
-
         if (d[i] < 0) d[i] = -d[i];
         sum += d[i];
     }
     printf("\n\nTracks Traversed\tDifference Between tracks\n");
     for (i = 0; i < p; i++)
         printf("%d\t\t\t%d\n", atr[i], d[i]);
-
     printf("\nAverage header movements: %.2f", (float)sum / n);
 }
 
