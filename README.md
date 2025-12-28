@@ -113,8 +113,10 @@ int main() {
     int i, j, temp;
     float wtavg = 0, tatavg = 0;
     int p[20];
+
     printf("Enter the number of processes: ");
     scanf("%d", &n);
+
     for (i = 0; i < n; i++) {
         p[i] = i + 1;
         printf("\nEnter Arrival Time for Process %d: ", i + 1);
@@ -122,6 +124,7 @@ int main() {
         printf("Enter Burst Time for Process %d: ", i + 1);
         scanf("%d", &bt[i]);
     }
+
     for (i = 0; i < n - 1; i++) {
         for (j = i + 1; j < n; j++) {
             if (at[i] > at[j]) {
@@ -131,32 +134,40 @@ int main() {
             }
         }
     }
+
     ct[0] = at[0] + bt[0];
     tat[0] = ct[0] - at[0];
     wt[0] = tat[0] - bt[0];
+
     for (i = 1; i < n; i++) {
         if (at[i] > ct[i - 1])
             ct[i] = at[i] + bt[i];  
         else
             ct[i] = ct[i - 1] + bt[i];
+
         tat[i] = ct[i] - at[i];
         wt[i] = tat[i] - bt[i];
     }
+
     for (i = 0; i < n; i++) {
         wtavg += wt[i];
         tatavg += tat[i];
     }
+
     printf("\n------------------------------------------------------------");
     printf("\nProcess\tAT\tBT\tCT\tTAT\tWT");
     printf("\n------------------------------------------------------------");
     for (i = 0; i < n; i++) {
         printf("\nP%d\t%d\t%d\t%d\t%d\t%d", p[i], at[i], bt[i], ct[i], tat[i], wt[i]);
     }
+
     printf("\n------------------------------------------------------------");
     printf("\nAverage Turnaround Time = %.2f", tatavg / n);
     printf("\nAverage Waiting Time = %.2f\n", wtavg / n);
+
     return 0;
 }
+
 Prg 4: Dining philosopher
 
 #include<stdio.h>
@@ -174,6 +185,7 @@ int main()
     for(i=0;i<tph;i++)
     { 
         philname[i] = (i); status[i]=1; 
+        
     } 
     printf("How many are hungry : "); 
     scanf("%d", &howhung);
@@ -187,7 +199,8 @@ int main()
             for(i=0;i<howhung;i++)
             {
                 printf("Enter philosopher %d position: ",(i+1)); 
-                scanf("%d", &hu[i]); status[hu[i]]=2;   
+                scanf("%d", &hu[i]); status[hu[i]]=2; 
+                
             } 
             do 
             { 
@@ -244,6 +257,7 @@ for(i=0;i<howhung;i++)
                 if((hu[x]!=t)&&(hu[x]!=r))
                 printf("\nP %d is waiting", philname[hu[x]]);
                 } 
+            
      } 
     }
     }
@@ -290,17 +304,21 @@ int n, r;
 void input() {
     int i, j;
     printf("Enter number of processes: ");
-    scanf("%d", &
+    scanf("%d", &n);
+
     printf("Enter number of resources: ");
     scanf("%d", &r);
+
     printf("Enter Max matrix:\n");
     for(i=0;i<n;i++)
         for(j=0;j<r;j++)
             scanf("%d", &max[i][j]);
+
     printf("Enter Allocation matrix:\n");
     for(i=0;i<n;i++)
         for(j=0;j<r;j++)
             scanf("%d", &alloc[i][j]);
+
     printf("Enter Available resources:\n");
     for(j=0;j<r;j++)
         scanf("%d", &avail[j]);
@@ -311,12 +329,16 @@ void display() {
     printf("\nProcess\tAlloc\tMax\tAvail\n");
     for(i=0;i<n;i++) {
         printf("P%d\t", i+1);
+
         for(j=0;j<r;j++) printf("%d ", alloc[i][j]);
         printf("\t");
+
         for(j=0;j<r;j++) printf("%d ", max[i][j]);
         printf("\t");
+
         if(i==0)
             for(j=0;j<r;j++) printf("%d ", avail[j]);
+
         printf("\n");
     }
 }
@@ -324,6 +346,7 @@ void display() {
 void calculate() {
     int finish[100]={0}, safeSeq[100];
     int i,j,k, count=0, found;
+
     // Need matrix
     printf("\nNeed Matrix:\n");
     for(i=0;i<n;i++){
@@ -749,7 +772,7 @@ scanf("%d",&queue[i]);
 }
 printf("Enter the initial head position\t");
 scanf("%d",&head);
-for(i=1;i<n;i++)
+for(i=0;i<n;i++)
 t[i]=abs(head-queue[i]);
 for(i=0;i<n;i++)
 {
@@ -766,7 +789,7 @@ queue[j]=temp;
 }
 }
 }
-for(i=1;i<n-1;i++)
+for(i=0;i<n;i++)
 {
 seek=seek+abs(head-queue[i]);
 head=queue[i];
@@ -776,6 +799,7 @@ avg=seek/(float)n;
 printf("\nAverage Seek Time is %f\t",avg);
 return 0;
 }
+
 
 OUTPUT: 
 *** SSTF Disk Scheduling Algorithm *** 
@@ -788,80 +812,61 @@ RESULT:
 Thus the program was executed and verified successfully.
 
 B. SCAN Scheduling 
-SCAN DISK SCHEDULING ALGORITHM 
-#include<stdio.h>
-void main()
-{
-    int t[20], d[20], h, i, j, n, temp, k, atr[20], p = 0, sum = 0;
-    printf("enter the no of tracks to be traveresed ");
+#include <stdio.h>
+#include <stdlib.h>
+int main() {
+    int t[20], d[20], h, i, j, n, temp, k, atr[20], tot, p, sum=0;
+    printf("Enter the no of tracks to be traversed: ");
     scanf("%d", &n);
-    printf("enter the position of head ");
+    printf("Enter the position of head: ");
     scanf("%d", &h);
-    t[0] = h;
-    printf("enter the tracks ");
-    for (i = 1; i <= n; i++)
+    t[0] = 0;      
+    t[1] = h;      
+    printf("Enter the tracks: ");
+    for(i = 2; i < n+2; i++)
         scanf("%d", &t[i]);
-    for (i = 0; i <= n; i++)
-    {
-        for (j = 0; j < n - i; j++)
-        {
-            if (t[j] > t[j + 1])
-            {
+    for(i = 0; i < n+2; i++) {
+        for(j = 0; j < (n+2)-i-1; j++) {
+            if(t[j] > t[j+1]) {
                 temp = t[j];
-                t[j] = t[j + 1];
-                t[j + 1] = temp;
+                t[j] = t[j+1];
+                t[j+1] = temp;
             }
         }
     }
-    for (i = 0; i <= n; i++)
-        if (t[i] == h)
-            k = i;
-    for (i = k + 1; i <= n; i++)
-        atr[p++] = t[i];
-    for (i = k - 1; i >= 0; i--)
-        atr[p++] = t[i];
-    for (i = 0; i < p; i++)
-    {
-        if (i == 0)
-            d[i] = atr[i] - h;
-        else
-            d[i] = atr[i] - atr[i - 1];
-        if (d[i] < 0) d[i] = -d[i];
-        sum += d[i];
+    for(i = 0; i < n+2; i++)
+        if(t[i] == h)
+            j = i;
+    
+    k = j;
+    p = 0;
+    while(t[j] != 0) {
+        atr[p] = t[j];
+        j--;
+        p++;
     }
-    printf("\n\nTracks Traversed\tDifference Between tracks\n");
-    for (i = 0; i < p; i++)
-        printf("%d\t\t\t%d\n", atr[i], d[i]);
-    printf("\nAverage header movements: %.2f", (float)sum / n);
+    atr[p] = t[j];  
+    for(p = k+1; p < n+2; p++, k++)
+        atr[p] = t[k+1];
+    for(j = 0; j < n+1; j++) {
+        if(atr[j] > atr[j+1])
+            d[j] = atr[j] - atr[j+1];
+        else
+            d[j] = atr[j+1] - atr[j];
+        sum += d[j];
+    }
+    printf("\nAverage header movements: %f", (float)sum/n);
+    return 0;
 }
 
 
 INPUT 
-Enter no.of tracks to be traveresed:9  
-enter the position of head :100
-Enter tracks:55 58 60 70 18 90 150 160 184  
-OUTPUT: 
-Tracks Traversed  
-150               
-160        
-184    
-90    
-70    
-60    
-58    
-55    
-18    
-Difference Between tracks 
-50 
-10 
-24 
-94 
-20 
-10 
-2 
-3 
-37 
-Average head movement is 27.78
+
+Enter the no of tracks to be traversed: 5
+Enter the position of head: 50
+Enter the tracks: 95 180 34 119 11
+o/p:
+Average header movements: 46.00000078
 
 Program 11:
 A. SEQUENTIAL FILE ALLOCATION
