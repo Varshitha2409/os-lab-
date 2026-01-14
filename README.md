@@ -1,1045 +1,937 @@
-OS 
+CN
 
-Prg 3: Producer and Consumer
+CN  
 
-#include<stdio.h> 
-void main() 
-{
- int buffer[10], bufsize, in, out, produce, consume, choice=0; 
-in = 0; 
-out = 0; 
-bufsize = 10; 
-while(choice !=3) 
-    { 
-      printf("\n 1. Produce \t 2. Consume \t3. Exit ");
-      printf("\n Enter your choice: "); 
-      scanf("%d", &choice); 
-      switch(choice) 
-            { 
-            case 1: 
-                  if((in+1)%bufsize==out) 
-                       printf("\n Buffer is Full");
-                  else
-                        { 
-                         printf("\n Enter the value: "); 
-                         scanf("%d", &produce); 
-                         buffer[in] = produce;
-                         in = (in+1)%bufsize; 
-                        }
-                    break; 
-           case 2: 
-                if(in == out)
-                     printf("\n Buffer is Empty");
-                else
-                    { 
-                    consume = buffer[out]; 
-                    printf("\n The consumed value is %d", consume); 
-                    out = (out+1)%bufsize;
-                    } 
-                     break; 
-                    }
-              }
-  }
-o/p:
- 1.producer 2. consumer 3.exit
-enter your choice :1
-enter the value :10
-1.producer 2. consumer 3.exit
-enter your choice :1
-enter the value :20
-1.producer 2. consumer 3.exit
-enter your choice :2
-The consumed value is 10
-1.producer 2. consumer 3.exit
-enter your choice :2
-The consumed value is 20
-1.producer 2. consumer 3.exit
-enter your choice :2
-buffer is empty .
+Program 1:  
 
-Prg 5: CPU (FCFS(Without arrival time)):
+#include<stdio.h>   
+int main() {  
+int data[10];  
+int dataatrec[10], c, c1, c2, c3, i;  
+printf("Enter 4 bits of data one by one\n");  
+scanf("%d",&data[0]);  
+scanf("%d",&data[1]);  
+scanf("%d",&data[2]);  
+scanf("%d",&data[4]);  
+ // calculate even parity  
+data[6]=data[0]^data[2]^data[4];  
+data[5]=data[0]^data[1]^data[4];  
+data[3]=data[0]^data[1]^data[2];  
+ printf("\nEncoded data is\n");  
+for(i=0;i<7;i++)  
+        printf("%d",data[i]);  
+ printf("\n\nEnter received data bits one by one\n");  
+ for(i=0;i<7;i++)  
+        scanf("%d",&dataatrec[i]);    
+c1=dataatrec[6]^dataatrec[4]^dataatrec[2]^dataatrec[0];  
+c2=dataatrec[5]^dataatrec[4]^dataatrec[1]^dataatrec[0];  
+c3=dataatrec[3]^dataatrec[2]^dataatrec[1]^dataatrec[0];  
+c=c3*4+c2*2+c1 ;    
+    if(c==0) {  
+printf("\nNo error while transmission of data\n");  
+    }  
+else {  
+printf("\nError on position %d",c);       
+printf("\nData sent : ");  
+        for(i=0;i<7;i++)   
+            printf("%d",data[i]);           
+printf("\nData received : ");  
+        for(i=0;i<7;i++)  
+            printf("%d",dataatrec[i]);   
+printf("\nCorrect message is\n");  
+  //if errorneous bit is 0 we complement it else vice versa  
+if(dataatrec[7-c]==0)  
+dataatrec[7-c]=1;  
+ else  
+dataatrec[7-c]=0;  
+for (i=0;i<7;i++) {  
+printf("%d",dataatrec[i]);  
+}  
+}  
+return 0;  
+}  
+  
+Output:  
+ 
+Case 1 without error 
 
-#include<stdio.h> 
-#include<conio.h> 
-int main() 
-{
- int bt[20], wt[20], tat[20], i, n;
- float wtavg, tatavg; 
-printf("\nEnter the number of processes -- ");
- scanf("%d", &n); 
-for(i=0;i<n;i++) 
-{ 
-printf("\nEnter Burst Time for Process %d -- ", i); 
-scanf("%d", &bt[i]); 
-} 
-wt[0] = wtavg = 0; 
-tat[0] = tatavg = bt[0];
- for(i=1;i<n;i++)
- {
- wt[i] = wt[i-1] +bt[i-1];
- tat[i] = tat[i-1] +bt[i]; 
-wtavg = wtavg + wt[i]; 
-tatavg = tatavg + tat[i]; 
-} 
-printf("\t PROCESS \tBURST TIME \t WAITING TIME\t TURNAROUND TIME\n"); 
-for(i=0;i<n;i++)
- printf("\n\t P%d \t\t %d \t\t %d \t\t %d", i, bt[i], wt[i], tat[i]); 
-printf("\nAverage Waiting Time -- %f", wtavg/n);
- printf("\nAverage Turnaround Time -- %f", tatavg/n); 
+ Enter 4 bits of data one by one 
+1 1 0 1
+Encoded data is 
+1100110
+Enter receive data bits one by one 
+1 1 0 0 1 1 0
+No error while transmission of data
+ 
+Case 2: with error 
 
-}
-o/p:
-Enter the number of processes:5
-enter the burst time for process 0 : 2
-enter the burst time for process 0 : 6
-enter the burst time for process 0 : 4
-enter the burst time for process 0 : 7
-enter the burst time for process 0 : 4
-Process           BT       WT       TAT
-P0                    2          0          2
-P1                    6          2          8
-P2                    4          8         12
-P3                    7         12        19 
-P4                    4         19        23
-Average WT =8.200
-Average TAT = 12.800
+ Enter 4 bits of data one by one 
+1 1 0 1
+Encoded data is 
+1100110
+Enter receive data bits one by one 
+1 1 0 0 1 0 0
+Error on Position :2
+Data sent: 1100110
+Data received : 1100100
+correct message is  
+1100110
 
-ii. with arrival time 
+Program 2:  
 
-#include <stdio.h>
-
-int main() {
-    int n, bt[20], at[20], wt[20], tat[20], ct[20];
-    int i, j, temp;
-    float wtavg = 0, tatavg = 0;
-    int p[20];
-
-    printf("Enter the number of processes: ");
-    scanf("%d", &n);
-
-    for (i = 0; i < n; i++) {
-        p[i] = i + 1;
-        printf("\nEnter Arrival Time for Process %d: ", i + 1);
-        scanf("%d", &at[i]);
-        printf("Enter Burst Time for Process %d: ", i + 1);
-        scanf("%d", &bt[i]);
-    }
-
-    for (i = 0; i < n - 1; i++) {
-        for (j = i + 1; j < n; j++) {
-            if (at[i] > at[j]) {
-                temp = at[i]; at[i] = at[j]; at[j] = temp;
-                temp = bt[i]; bt[i] = bt[j]; bt[j] = temp;
-                temp = p[i];  p[i] = p[j];  p[j] = temp;
-            }
-        }
-    }
-
-    ct[0] = at[0] + bt[0];
-    tat[0] = ct[0] - at[0];
-    wt[0] = tat[0] - bt[0];
-
-    for (i = 1; i < n; i++) {
-        if (at[i] > ct[i - 1])
-            ct[i] = at[i] + bt[i];  
-        else
-            ct[i] = ct[i - 1] + bt[i];
-
-        tat[i] = ct[i] - at[i];
-        wt[i] = tat[i] - bt[i];
-    }
-
-    for (i = 0; i < n; i++) {
-        wtavg += wt[i];
-        tatavg += tat[i];
-    }
-
-    printf("\n------------------------------------------------------------");
-    printf("\nProcess\tAT\tBT\tCT\tTAT\tWT");
-    printf("\n------------------------------------------------------------");
-    for (i = 0; i < n; i++) {
-        printf("\nP%d\t%d\t%d\t%d\t%d\t%d", p[i], at[i], bt[i], ct[i], tat[i], wt[i]);
-    }
-
-    printf("\n------------------------------------------------------------");
-    printf("\nAverage Turnaround Time = %.2f", tatavg / n);
-    printf("\nAverage Waiting Time = %.2f\n", wtavg / n);
-
-    return 0;
-}
-
-Prg 4: Dining philosopher
-
-#include<stdio.h>
-#include<stdlib.h>
-int one();
-int two() ;
-
-int tph, philname[20], status[20], howhung, hu[20], cho; 
+#include <iostream> 
+#include <unistd.h> 
+using namespace std; 
 int main() 
 { 
-    int i; 
-    printf("\n\nDINING PHILOSOPHER PROBLEM"); 
-    printf("\nEnter the total no. of philosophers: "); 
-    scanf("%d",&tph); 
-    for(i=0;i<tph;i++)
-    { 
-        philname[i] = (i); status[i]=1; 
-        
-    } 
-    printf("How many are hungry : "); 
-    scanf("%d", &howhung);
-    if(howhung==tph)
-    { 
-        printf("\nAll are hungry..\nDead lock stage will occur"); 
-        printf("\nExiting..");
+    int frames[] = {1, 2, 3, 4}; 
+    int delaysPerFrame[] = {1, 2, 2, 1}; 
+    cout << "Sender has to send frames : "; 
+    for (int i = 0; i < 4; i++) 
+        cout << frames[i] << " "; 
+    cout << endl << endl; 
+    cout << "Sender\t\t\t\t\tReceiver" << endl; 
+    const useconds_t shortDelay = 350000; 
+    for (int i = 0; i < 4; i++) { 
+        int frame = frames[i]; 
+        int delayCount = delaysPerFrame[i]; 
+        cout << "Sending Frame : " << frame << "\t\t"; 
+        usleep(shortDelay); 
+        cout << "Received Frame : " << frame << endl; 
+        for (int d = 0; d < delayCount; d++) { 
+            usleep(shortDelay); 
+            cout << "Delayed Ack" << endl; 
+            usleep(shortDelay); 
+            cout << "Sending Frame : " << frame << "\t\t"; 
+            usleep(shortDelay); 
+            cout << "Received Frame : " << frame << " Duplicate" << endl; 
         } 
-        else
-        { 
-            for(i=0;i<howhung;i++)
-            {
-                printf("Enter philosopher %d position: ",(i+1)); 
-                scanf("%d", &hu[i]); status[hu[i]]=2; 
-                
-            } 
-            do 
-            { 
-                printf("1.One can eat at a time\t2.Two can eat at a time\t3.Exit\nEnter your choice:"); 
-                scanf("%d", &cho);
-                switch(cho) 
-                { 
-                    case 1:
-                            one(); 
-                            break; 
-                    case 2: 
-                             two(); 
-                             break; 
-                    case 3:
-                        exit(0); 
-                    default: 
-                        printf("\nInvalid option.."); 
-                }
-            }
-            while(1);
-            } 
-    
-} 
-
-int one()
-{
-    int pos=0, x, i; 
-    printf("\nAllow one philosopher to eat at any time\n"); 
-    for(i=0;i<howhung; i++, pos++) 
-    { printf("\nP %d is granted to eat", philname[hu[pos]]); 
-    for(x=pos+1;x<howhung;x++)
-    printf("\nP %d is waiting", philname[hu[x]]);
+        usleep(shortDelay); 
+        cout << "Acknowledgement : " << frame << endl; 
     } 
+    return 0; 
 } 
+ 
+Output:
+Sender has to send frames : 1 2 3 4
+
+Sender                            Receiver
+
+Sending Frame : 1        Received Frame : 1
+Delayed Ack
+Sending Frame : 1        Received Frame : 1 Duplicate
+Acknowledgement : 1
+
+Sending Frame : 2        Received Frame : 2
+Delayed Ack
+Sending Frame : 2        Received Frame : 2 Duplicate
+Delayed Ack
+Sending Frame : 2        Received Frame : 2 Duplicate
+Acknowledgement : 2
+
+Sending Frame : 3        Received Frame : 3
+Delayed Ack
+Sending Frame : 3        Received Frame : 3 Duplicate
+Delayed Ack
+Sending Frame : 3        Received Frame : 3 Duplicate
+Acknowledgement : 3
+
+Sending Frame : 4        Received Frame : 4
+Delayed Ack
+Sending Frame : 4        Received Frame : 4 Duplicate
+Acknowledgement : 4
 
 
-int two() 
-{ 
-int i, j, s=0, t, r, x; 
-printf("\n Allow two philosophers to eat at same time\n");
-for(i=0;i<howhung;i++) 
-{ 
-    for(j=i+1;j<howhung;j++)
-    {
-        if(abs(hu[i]-hu[j])!=1&& abs(hu[i]-hu[j])!=(tph-1))
-        { 
-            printf("\n\ncombination %d \n", (s+1)); 
-            t=hu[i];
-            r=hu[j];
-            s++; 
-            printf("\nP %d and P %d are granted to eat", philname[hu[i]], philname[hu[j]]);
-            for(x=0;x<howhung;x++)
-            { 
-                if((hu[x]!=t)&&(hu[x]!=r))
-                printf("\nP %d is waiting", philname[hu[x]]);
+Program 3:  
+
+#include <iostream> 
+#include <cstdlib>
+#include <ctime>  
+class Station {  
+public: 
+Station(std::string name) : name(name) {}  
+void send() { 
+if (carrierBusy()) { 
+std::cout << name << " detects carrier busy, deferring transmission." << std::endl; 
+return; 
+} 
+std::cout << name << " is sending a message." << std::endl;  
+if (collisionDetected()) { 
+std::cout << name << " detects a collision, stopping transmission." << std::endl; 
+} else { 
+std::cout << name << " successfully transmitted the message." << std::endl; 
+} 
+} 
+bool carrierBusy() { 
+return rand() % 2 == 1; 
+} 
+bool collisionDetected() { 
+return rand()% 2 == 1; 
+} 
+private: 
+std::string name; 
+}; 
+int main() { 
+Station stationA("Station A"); 
+ Station stationB("Station B"); int i=1; 
+while(i<=10){ 
+std::cout<<"Scenario"<<i<<std::endl;  
+stationA.send(); 
+stationB.send(); i++; 
+} 
+return 0; 
+} 
+  
+Output:  
+
+Scenario1
+Station A detects carrier busy, deferring transmission.
+Station B is sending a message.
+Station B detects a collision, stopping transmission.
+
+etc
+
+Program 4: 
+
+#include<stdio.h>  
+#include<iostream>  
+using namespace std;                                              
+struct node  {
+    unsigned dist[6];  
+    unsigned from[6];  
+}DVR[10];  
+int main()  
+{  
+    cout<<"\n\n-------------------- Distance Vector Routing Algorithm----------- ";  
+    int costmat[6][6];  
+    int nodes, i, j, k;  
+    cout<<"\n\n Enter the number of nodes : ";  
+    cin>>nodes; 
+    cout<<"\n Enter the cost matrix : \n" ;  
+    for(i = 0; i < nodes; i++)  
+     {  
+        for(j = 0; j < nodes; j++)  
+        {  
+            cin>>costmat[i][j];  
+            costmat[i][i] = 0;  
+            DVR[i].dist[j] = costmat[i][j];  
+            DVR[i].from[j] = j;  
+        }  
+    }  
+            for(i = 0; i < nodes; i++)   
+            for(j = i+1; j < nodes; j++)  
+            for(k = 0; k < nodes; k++)  
+                if(DVR[i].dist[j] > costmat[i][k] + DVR[k].dist[j])  
+                {   //We calculate the minimum distance  
+                    DVR[i].dist[j] = DVR[i].dist[k] + DVR[k].dist[j];  
+                    DVR[j].dist[i] = DVR[i].dist[j];  
+                    DVR[i].from[j] = k;  
+                    DVR[j].from[i] = k;  
+                }  
+        for(i = 0; i < nodes; i++)  
+        {  
+            cout<<"\n\n For router: "<<i+1;  
+            for(j = 0; j < nodes; j++)  
+                cout<<"\t\n node "<<j+1<<" via "<<DVR[i].from[j]+1<<" Distance 
+"<<DVR[i].dist[j];  
+        }  
+    cout<<" \n\n ";  
+    return 0;  
+}  
+
+Output:
+---------------- Distance Vector Routing Algorithm ----------------
+
+Enter the number of nodes : 4
+
+Enter the cost matrix :
+0 2 999 1
+2 0 3 7
+999 3 0 11
+1 7 11 0
+
+
+For router : 1
+node 1 via 1 Distance 0
+node 2 via 2 Distance 2
+node 3 via 2 Distance 5
+node 4 via 4 Distance 1
+
+
+For router : 2
+node 1 via 1 Distance 2
+node 2 via 2 Distance 0
+node 3 via 3 Distance 3
+node 4 via 1 Distance 3
+
+
+For router : 3
+node 1 via 2 Distance 5
+node 2 via 2 Distance 3
+node 3 via 3 Distance 0
+node 4 via 2 Distance 6
+
+
+For router : 4
+node 1 via 1 Distance 1
+node 2 via 1 Distance 3
+node 3 via 2 Distance 6
+node 4 via 4 Distance 0
+
+Program 5: 
+
+#include <iostream> 
+#include <vector> 
+#include <climits> 
+using namespace std; 
+const int INF = INT_MAX; 
+class Network { 
+public: 
+    int numNodes; 
+    vector<vector<int>> costMatrix; 
+    Network(int nodes) : numNodes(nodes) { 
+        costMatrix.resize(nodes, vector<int>(nodes, INF)); 
+    } 
+    void addLink(int node1, int node2, int cost) { 
+        costMatrix[node1][node2] = cost; 
+        costMatrix[node2][node1] = cost; 
+    } 
+    void printLeastCostTree(int source, const vector<int>& parent) { 
+        cout << "Least Cost Tree:" << endl; 
+        for (int i = 0; i < numNodes; ++i) { 
+            if (i != source) { 
+                cout << "Node " << i << " -> Node " << parent[i] 
+                     << " (Cost: " << costMatrix[i][parent[i]] << ")" 
+                     << endl; 
+            } 
+        } 
+    } 
+    void linkStateRouting(int source) { 
+        vector<int> distance(numNodes, INF); 
+        vector<bool> inTree(numNodes, false); 
+        vector<int> parent(numNodes, -1); 
+        distance[source] = 0; 
+        for (int i = 0; i < numNodes - 1; ++i) { 
+            int u = getMinDistanceVertex(distance, inTree); 
+            inTree[u] = true; 
+            for (int v = 0; v < numNodes; ++v) { 
+                if (!inTree[v] && 
+                    costMatrix[u][v] != INF && 
+                    distance[u] + costMatrix[u][v] < distance[v]) { 
+                    parent[v] = u; 
+                    distance[v] = distance[u] + costMatrix[u][v]; 
                 } 
-            
-     } 
-    }
-    }
-    }
-o/p:
-1.
-DINING PHILOSOPHER PROBLEM
-Enter the total number of  philosophers:3
-how mny are hungry :3
-All are hungry..
-Dead lock stage will occur
-Exiting..
-2.
-Enter the total no. of philosophers: 3
-How many are hungry : 1
-Enter philosopher 1 position: 2
-1. 1 can eat at a time 2. 2 can eat at a time 3.exit
-Enter your choice: 1
-Allow one philosopher to eat at any time
-P 2 is granted to eat
-3.
-Enter the total no. of philosophers: 3
-How many are hungry : 2
-Enter philosopher 1 position: 2
-Enter philosopher 2 position: 4
-1. 1 can eat at a time 2. 2 can eat at a time 3.exit
-Enter your choice: 1
-Allow one philosopher to eat at any time
-P 2 is granted to eat
-P 4 is waiting
-P 4 is granted to eat
-1. 1 can eat at a time 2. 2 can eat at a time 3.exit
-Enter your choice: 2
-Allow 2 philosopher to eat at the same time
-combination 1
-p2 and p4 are granted to eat
-prg 7: bankers algorithm
+            } 
+        } 
+        printLeastCostTree(source, parent); 
+    } 
 
+    int getMinDistanceVertex(const vector<int>& distance, 
+                             const vector<bool>& inTree) { 
+        int minDistance = INF; 
+        int minVertex = -1; 
+        for (int v = 0; v < numNodes; ++v) { 
+            if (!inTree[v] && distance[v] < minDistance) { 
+                minDistance = distance[v]; 
+                minVertex = v; 
+            } 
+        } 
+        return minVertex; 
+    } 
+}; 
+ 
+int main() { 
+    int numNodes = 4; 
+    Network network(numNodes); 
+    network.addLink(0, 1, 4); 
+    network.addLink(0, 2, 2); 
+    network.addLink(1, 2, 5); 
+    network.addLink(1, 3, 10); 
+    network.addLink(2, 3, 1); 
+    int sourceNode = 0; 
+    network.linkStateRouting(sourceNode); 
+    return 0; 
+} 
+Output:
+Least Cost Tree :
+Node 1-> Node 0 (Cost :4)
+Node 2-> Node 0 (Cost :2)
+Node 3-> Node 2 (Cost :1)
+
+Program 6:  
+
+// TCP server side  
+#include<stdio.h>  
+#include<netinet/in.h>  
+#include<netdb.h>  
+#include<arpa/inet.h>  
+#include<unistd.h>     
+#define SERV_TCP_PORT 5035  
+int main(int argc,char**argv)  
+{   
+       int sockfd,newsockfd;  
+       socklen_t clength;  
+       struct sockaddr_in serv_addr,cli_addr;  
+       char buffer[4096];   
+       sockfd=socket(AF_INET,SOCK_STREAM,0);     
+       serv_addr.sin_family=AF_INET;  
+       serv_addr.sin_addr.s_addr=INADDR_ANY;  
+       serv_addr.sin_port=htons(SERV_TCP_PORT);   
+       printf("\nStart");  
+       bind(sockfd,(struct sockaddr*)&serv_addr,sizeof(serv_addr));  
+       printf("\nListening...");  
+       printf("\n");  
+       listen(sockfd,5);    
+       clength=sizeof(cli_addr);  
+       newsockfd=accept(sockfd,(struct sockaddr*)&cli_addr,&clength);  
+       printf("\nConnection Accepted");  
+       printf("\n");  
+       read(newsockfd,buffer,4096);  
+       printf("\nClient message:%s",buffer);  
+       write(newsockfd,buffer,4096);  
+       printf("\n");   
+       close(sockfd);  
+       close(newsockfd);  
+       return 0;  
+} 
+ 
+//TCP client side  
+#include<stdio.h>  
+#include<sys/types.h>  
+#include<sys/socket.h>  
+#include<netinet/in.h>  
+#include<netdb.h>  
+#include<unistd.h>  
+#include<arpa/inet.h>  
+#define SERV_TCP_PORT 5035  
+int main(int argc,char*argv[])  
+{  
+       int sockfd;  
+       struct sockaddr_in serv_addr;  
+       struct hostent *server;  
+       char buffer[4096];   
+       sockfd=socket(AF_INET,SOCK_STREAM,0);  
+       serv_addr.sin_family=AF_INET;  
+       serv_addr.sin_addr.s_addr=inet_addr("127.0.0.1");  
+       serv_addr.sin_port=htons(SERV_TCP_PORT);  
+       printf("\nReady for sending...");  
+       connect(sockfd,(struct sockaddr*)&serv_addr,sizeof(serv_addr));  
+       printf("\nEnter the message to send\n");  
+       printf("\nClient: ");  
+       fgets(buffer,4096,stdin);   
+       write(sockfd,buffer,4096);  
+       printf("Serverecho:%s",buffer);  
+       printf("\n");  
+       close(sockfd);  
+       return 0;  
+} 
+ 
+Output:
+
+At Server Terminal  :
+
+Start
+Listening...
+
+Accepted
+
+Client message: hello
+
+At Client Terminal:
+
+Ready for sending...
+Enter the message to send
+
+Client: hello
+Server echo: hello
+
+
+
+ Compressed prg
+
+prg 3:
+
+#include <iostream> 
+#include <cstdlib> 
+#include <ctime> 
+using namespace std; 
+ 
+int main() { 
+    srand(time(0)); 
+    for (int i = 1; i <= 5; i++) { 
+        cout << "\nScenario" << i << endl; 
+        int a = rand() % 3; 
+        int b = rand() % 3; 
+ 
+        if (a == 0) cout << "Station A detects carrier busy, deferring transmission." << endl; 
+        else cout << "Station A is sending a message." << endl; 
+ 
+        if (b == 0) cout << "Station B detects carrier busy, deferring transmission." << endl; 
+        else if (b == 1) cout << "Station B detects a collision, stopping transmission." << endl; 
+        else cout << "Station B successfully transmitted the message." << endl; 
+    } 
+    return 0; 
+} 
+
+prg 4:
+
+
+#include <iostream> 
+using namespace std; 
+ 
+struct node { 
+    int dist[10]; 
+    int from[10]; 
+} DVR[10]; 
+ 
+int main() { 
+    int cost[10][10], nodes; 
+    cout << "---------------- Distance Vector Routing Algorithm----------------\n\n"; 
+    cout << "Enter the number of nodes : "; 
+    cin >> nodes; 
+    cout << "\nEnter the cost matrix :\n"; 
+    for (int i = 0; i < nodes; i++) { 
+        for (int j = 0; j < nodes; j++) { 
+            cin >> cost[i][j]; 
+            DVR[i].dist[j] = cost[i][j]; 
+            DVR[i].from[j] = j; 
+        } 
+    } 
+    for (int i = 0; i < nodes; i++) { 
+        for (int j = 0; j < nodes; j++) { 
+            for (int k = 0; k < nodes; k++) { 
+                if (DVR[i].dist[j] > cost[i][k] + DVR[k].dist[j]) { 
+                    DVR[i].dist[j] = cost[i][k] + DVR[k].dist[j]; 
+                    DVR[i].from[j] = k; 
+                } 
+            } 
+        } 
+    } 
+    for (int i = 0; i < nodes; i++) { 
+        cout << "\nFor router: " << i + 1 << endl; 
+        for (int j = 0; j < nodes; j++) { 
+            cout << "node " << j + 1 << " via " << DVR[i].from[j] + 1 << " Distance " << DVR[i].dist[j] << 
+endl; 
+        } 
+    } 
+    return 0; 
+}
+
+prg 5:
+
+#include <iostream> 
+#include <climits> 
+using namespace std; 
+#define N 4 
+#define INF 999 
+ 
+int main() { 
+    int cost[N][N] = { {0, 4, 2, INF}, {4, 0, 5, 10}, {2, 5, 0, 1}, {INF, 10, 1, 0} }; 
+    int dist[N], parent[N]; 
+    bool visited[N]; 
+ 
+    for (int i = 0; i < N; i++) { dist[i] = INF; visited[i] = false; parent[i] = -1; } 
+    dist[0] = 0; 
+ 
+    for (int i = 0; i < N - 1; i++) { 
+        int u = -1, min = INF; 
+        for (int j = 0; j < N; j++) if (!visited[j] && dist[j] < min) { min = dist[j]; u = j; } 
+        visited[u] = true; 
+        for (int v = 0; v < N; v++) { 
+            if (!visited[v] && cost[u][v] != INF && dist[u] + cost[u][v] < dist[v]) { 
+                dist[v] = dist[u] + cost[u][v]; 
+                parent[v] = u; 
+            } 
+        } 
+    } 
+    cout << "Least Cost Tree:" << endl; 
+    for (int i = 1; i < N; i++) cout << "Node " << i << " -> Node " << parent[i] << " (Cost: " << 
+cost[i][parent[i]] << ")" << endl; 
+    return 0; 
+} 
+
+prg 6.
+
+// server.c
 #include <stdio.h>
-
-int max[100][100], alloc[100][100], need[100][100], avail[100];
-int n, r;
-
-void input() {
-    int i, j;
-    printf("Enter number of processes: ");
-    scanf("%d", &n);
-
-    printf("Enter number of resources: ");
-    scanf("%d", &r);
-
-    printf("Enter Max matrix:\n");
-    for(i=0;i<n;i++)
-        for(j=0;j<r;j++)
-            scanf("%d", &max[i][j]);
-
-    printf("Enter Allocation matrix:\n");
-    for(i=0;i<n;i++)
-        for(j=0;j<r;j++)
-            scanf("%d", &alloc[i][j]);
-
-    printf("Enter Available resources:\n");
-    for(j=0;j<r;j++)
-        scanf("%d", &avail[j]);
-}
-
-void display() {
-    int i,j;
-    printf("\nProcess\tAlloc\tMax\tAvail\n");
-    for(i=0;i<n;i++) {
-        printf("P%d\t", i+1);
-
-        for(j=0;j<r;j++) printf("%d ", alloc[i][j]);
-        printf("\t");
-
-        for(j=0;j<r;j++) printf("%d ", max[i][j]);
-        printf("\t");
-
-        if(i==0)
-            for(j=0;j<r;j++) printf("%d ", avail[j]);
-
-        printf("\n");
-    }
-}
-
-void calculate() {
-    int finish[100]={0}, safeSeq[100];
-    int i,j,k, count=0, found;
-
-    // Need matrix
-    printf("\nNeed Matrix:\n");
-    for(i=0;i<n;i++){
-        for(j=0;j<r;j++){
-            need[i][j] = max[i][j] - alloc[i][j];
-            printf("%d ", need[i][j]);
-        }
-        printf("\n");
-    }
-    while(count < n) {
-        found = 0;
-
-        for(i=0;i<n;i++) {
-            if(finish[i] == 0) {
-
-                for(j=0;j<r;j++)
-                    if(need[i][j] > avail[j])
-                        break;
-
-                if(j == r) {  
-                    for(k=0;k<r;k++)
-                        avail[k] += alloc[i][k];   
-
-                    safeSeq[count++] = i;
-                    finish[i] = 1;
-                    found = 1;
-                }
-            }
-        }
-
-        if(!found) break;
-    }
-
-    if(count == n) {
-        printf("\nSystem is in SAFE state.\nSafe Sequence: ");
-        for(i=0;i<n;i++) printf("P%d ", safeSeq[i]);
-    } else {
-        printf("\nSystem is in UNSAFE state (Deadlock Detected).\n");
-    }
-}
+#include <unistd.h>
+#include <arpa/inet.h>
 
 int main() {
-    printf("***** Banker's Algorithm *****\n");
-    input();
-    display();
-    calculate();
-    return 0;
-}
-************ Banker's Algorithm ************
+    int s, ns;
+    char buf[4096];
+    struct sockaddr_in a = {AF_INET, htons(5035), INADDR_ANY};
 
-Enter the no of Processes          5
-Enter the no of resources instances  3
+    printf("\nStart");
+    s = socket(AF_INET, SOCK_STREAM, 0);
+    bind(s, (struct sockaddr*)&a, sizeof(a));
 
-Enter the Max Matrix
-7 5 3
-3 2 2
-9 0 2
-2 2 2
-4 3 3
+    printf("\nListening...\n");
+    listen(s, 5);
 
-Enter the Allocation Matrix
-0 1 0
-2 0 0
-3 0 2
-2 1 1
-0 0 2
+    ns = accept(s, NULL, NULL);
+    printf("\nConnection Accepted\n");
 
-Enter the available Resources
-3 3 2
+    read(ns, buf, sizeof(buf));
+    printf("\nClient message:%s", buf);
 
-Process    Allocation    Max        Available
-P1             0 1 0         7 5 3            3 3 2
-P2             2 0 0         3 2 2
-P3             3 0 2         9 0 2
-P4             2 1 1         2 2 2
-P5             0 0 2         4 3 3
+    write(ns, buf, sizeof(buf));
+    printf("\n");
 
------------ Need Matrix -----------
-7 4 3
-1 2 2
-6 0 0
-0 1 1
-4 3 1
-
-Safe Sequence:
-P2 -> P4 -> P5 -> P1 -> P3 ->
-
-The system is in safe state
-
-Program 8:
-A. First Fit
-
-#include<stdio.h> 
-#include<conio.h>
-#define max 25
-void main() 
-{ 
-int frag[max],b[max],f[max],i,j,nb,nf,temp; 
-static int bf[max],ff[max];
-printf("\n\tMemory Management Scheme - First Fit"); 
-printf("\nEnter the number of blocks:"); 
-scanf("%d",&nb); 
-printf("Enter the number of files:"); 
-scanf("%d",&nf); 
-printf("\nEnter the size of the blocks:-\n"); 
-for(i=1;i<=nb;i++)
-{
-printf("Block %d:",i); scanf("%d",&b[i]);}
-printf("Enter the size of the files :-\n");
-for(i=1;i<=nf;i++) 
-{ 
-printf("File %d:",i);
-scanf("%d",&f[i]); 
-}
-for(i=1;i<=nf;i++)
-{ 
-for(j=1;j<=nb;j++)
-{
-if(bf[j]!=1)
-{
-temp=b[j]-f[i];if(temp>=0) 
-{ 
-ff[i]=j;
-break;
-}
-}
-} 
-frag[i]=temp;
-bf[ff[i]]=1;
-}
-printf("\nFile_no:\tFile_size :\tBlock_no:\tBlock_size:\tFragement"); for(i=1;i<=nf;i++)
-printf("\n%d\t\t%d\t\t%d\t\t%d\t\t%d",i,f[i],ff[i],b[ff[i]],frag[i]); 
-getch();
-}
-o/p:
-INPUT:
-Enter the number of blocks: 3
-Enter the number of files: 2
-Enter the size of the blocks:
-Block 1: 5
-Block 2: 2
-Block 3: 7
-Enter the size of the files:
-File 1: 1
-File 2: 4
-OUTPUT
-File No	File Size	Block No	Block Size	Fragment
-1	          1	           1	          5	                  4
-2             	  4	           3             7	                  3
-
-B. worst Fit
-
-#include<stdio.h> 
-#include<conio.h> 
-#define max 25 
-void main() 
-{ 
-int frag[max],b[max],f[max],i,j,nb,nf,temp,highest=0; 
-static int bf[max],ff[max]; 
-printf("\n\tMemory Management Scheme - Worst Fit");
- printf("\nEnter the number of blocks:");
-scanf("%d",&nb); 
-printf("Enter the number of files:"); 
-scanf("%d",&nf); 
-printf("\nEnter the size of the blocks:-\n"); 
-for(i=1;i<=nb;i++) 
-{
-printf("Block %d:",i);
-scanf("%d",&b[i]); 
-}
-printf("Enter the size of the files :-\n"); for(i=1;i<=nf;i++) 
-{ 
-printf("File %d:",i);
-scanf("%d",&f[i]);} 
-for(i=1;i<=nf;i++) 
-{ 
-for(j=1;j<=nb;j++) 
-{ 
-if(bf[j]!=1) //if bf[j] is not allocated 
-{ 
-temp=b[j]-f[i]; 
-if(temp>=0)
-if(highest<temp) 
-{
-ff[i]=j; 
-highest=temp;} 
-}
-} 
-frag[i]=highest;bf[ff[i]]=1; 
-highest=0; 
-} 
-printf("\nFile_no:\tFile_size :\tBlock_no:\tBlock_size:\tFragement");
-for(i=1;i<=nf;i++) 
-printf("\n%d\t\t%d\t\t%d\t\t%d\t\t%d",i,f[i],ff[i],b[ff[i]],frag[i]); getch();
-}
-o/p:
-INPUT:
-Enter the number of blocks: 3
-Enter the number of files: 2
-Enter the size of the blocks:
-Block 1: 5
-Block 2: 2
-Block 3: 7
-Enter the size of the files:
-File 1: 1
-File 2: 4
-OUTPUT
-File No	File Size	Block No	Block Size	Fragment
-1	          1	           3	          7	                  6
-2             	  4	           1             5	                  1
-Program 1:
-a.read (),write().
-
-#include<unistd.h>
-int main()
-{
-int nread;
-char buff[20];
-nread=read(0,buff,10);
-write (1,buff,nread);
-return 0;
-}
-o/p
-babbyamma
-babbyamma
-
-b. 10 characters
-
-#include<unistd.h>
-#include<fcntl.h>
-#include<sys/types.h>
-#include<sys/stat.h>
-#include<stdio.h>
-int main()
-{
-int n,f,f1;
-char buff[10];
-f=open("seeking",O_RDWR);
-f1=lseek(f,10,SEEK_SET);
-printf("Pointer is at %d position\n",f1);
-read(f,buff,10);
-write(1,buff,10);
-}
-o/p
-cc filename.c
-echo "1234567890abcdefghijxxxxxxxx" > seeking 
-./a.out
-Pointer is at 10 Position 
-abcdefghij
-
-Program 9
-A.FIFO 
-
-#include<stdio.h>
- void main() 
-{
-int i, j, k, f, pf=0, count=0, rs[25], m[10], n; 
-printf("\n Enter the length of reference string -- "); 
-scanf("%d",&n); printf("\n Enter the reference string -- "); 
-for(i=0;i<n;i++) 
-scanf("%d",&rs[i]); 
-printf("\n Enter no. of frames -- "); 
-scanf("%d",&f);
-for(i=0;i<f;i++) 
-m[i]=-1; 
-printf("\n The Page Replacement Process is -- \n"); 
-for(i=0;i<n;i++) 
-{ 
-for(k=0;k<f;k++) 
-{
-if(m[k]==rs[i]) break;
-}
-if(k==f) 
-{ 
-m[count++]=rs[i];
-pf++; 
-}
-for(j=0;j<f;j++)
-printf("\t%d",m[j]);
-if(k==f) 
-printf("\tPF No. %d",pf); printf("\n");
-if(count==f) 
-count=0; 
-} 
-printf("\n The number of Page Faults using FIFO are %d",pf);
-}
-I/P
-Enter the length of reference string -- 20
-Enter the reference string --
-7 0 1 2 0 3 0 4 2 3 0 3 2 1 2 0 1 7 0 1
-Enter no. of frames -- 3
-
-
-O/P:
-7   -1  -1        PF No. 1
-7    0  -1        PF No. 2
-7    0   1        PF No. 3
-2    0   1        PF No. 4
-2    0   1       
-2    3   1        PF No. 5
-2    3   0        PF No. 6
-4    3   0        PF No. 7
-4    2   0        PF No. 8
-4    2   3        PF No. 9
-0    2   3        PF No. 10
-0    2   3
-0    2   3      
-0    1   3        PF No. 11
-0    1   2        PF No. 12
-0    1   2
-7    1   2        PF No. 13
-7    0   2        PF No. 14
-7    0   1        PF No. 15
-
-The number of Page Fault using FIFO are 15
-
-B. LRU 
- 
-#include<stdio.h> 
- void main() 
-{ 
-int i, j , k, min, rs[25], m[10], count[10], flag[25], n, f, pf=0, next=1; 
-printf("Enter the length of reference string -- "); 
-scanf("%d",&n); printf("Enter the reference string -- ");
-for(i=0;i<n;i++)
-{ 
-scanf("%d",&rs[i]); 
-flag[i]=0;
-}
-printf("Enter the number of frames -- "); 
-scanf("%d",&f); 
-for(i=0;i<f;i++) 
-{ 
-count[i]=0; 
-m[i]=-1; 
-}
-printf("\nThe Page Replacement process is -- \n");
-for(i=0;i<n;i++) 
-{ 
-for(j=0;j<f;j++)
-{
-if(m[j]==rs[i]) 
-{
-flag[i]=1; 
-count[j]=next; next++; 
-} 
-}
-if(flag[i]==0) 
-{ 
-if(i<f)
-{
-m[i]=rs[i];
-count[i]=next; 
-next++; 
-} 
-else
-{ 
-min=0; 
-for(j=1;j<f;j++)
-if(count[min] > count[j])
-min=j; 
-m[min]=rs[i]; 
-count[min]=next;
-next++;
-} 
-pf++; 
-} 
-for(j=0;j<f;j++) 
-printf("%d\t", m[j]);
-if(flag[i]==0)
-printf("PF No. -- %d" , pf); 
-printf("\n"); 
-} 
-printf("\nThe number of page faults using LRU are %d",pf); 
-
-}
-i/p:
-Enter the length of reference string -- 20
-Enter the reference string --
-7 0 1 2 0 3 2 4 0 3 0 3 2 1 3 0 1 0 7 0
-Enter the number of frames -- 3
-
-
-O/P:
-7   -1  -1        PF No. 1
-7    0  -1        PF No. 2
-7    0   1        PF No. 3
-2    0   1        PF No. 4
-2    0   1        
-2    0   3        PF No. 5
-2    0   3       
-4    0   3        PF No. 6
-4    0   2        PF No. 7
-4    3   2        PF No. 8
-0    3   2        PF No. 9
-0    3   2
-0    3   2      
-1    3   2       PF No. 10
-1    3   2     
-1    0   2        PF No. 11
-1    0   2
-1    0   7        PF No. 12
-1    0   7
-1    0   7
-The number of Page Fault using LRU are 12
-
-Program 10
-
-A. SSTF Scheduling 
-#include<stdio.h>
-#include<math.h>
-int main()
-{
-int queue[100],t[100],head,seek=0,n,i,j,temp;
-float avg;
-printf("*** SSTF Disk Scheduling Algorithm ***\n");
-printf("Enter the size of Queue\t");
-scanf("%d",&n);
-printf("Enter the Queue\t");
-for(i=0;i<n;i++)
-{
-scanf("%d",&queue[i]);
-}
-printf("Enter the initial head position\t");
-scanf("%d",&head);
-for(i=0;i<n;i++)
-t[i]=abs(head-queue[i]);
-for(i=0;i<n;i++)
-{
-for(j=i+1;j<n;j++)
-{
-if(t[i]>t[j])
-{
-temp=t[i];
-t[i]=t[j];
-t[j]=temp;
-temp=queue[i];
-queue[i]=queue[j];
-queue[j]=temp;
-}
-}
-}
-for(i=0;i<n;i++)
-{
-seek=seek+abs(head-queue[i]);
-head=queue[i];
-}
-printf("\nTotal Seek Time is%d\t",seek);
-avg=seek/(float)n;
-printf("\nAverage Seek Time is %f\t",avg);
-return 0;
+    close(ns);
+    close(s);
 }
 
 
-OUTPUT: 
-*** SSTF Disk Scheduling Algorithm *** 
-Enter the size of Queue 5 
-Enter the Queue 10 17 2 15 4 
-Enter the initial head position 3 
-Total Seek Time is14 
-Average Seek Time is 2.800000 
-RESULT: 
-Thus the program was executed and verified successfully.
-
-B. SCAN Scheduling 
+// client.c
 #include <stdio.h>
-#include <stdlib.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+
 int main() {
-    int t[20], d[20], h, i, j, n, temp, k, atr[20], tot, p, sum=0;
-    printf("Enter the no of tracks to be traversed: ");
-    scanf("%d", &n);
-    printf("Enter the position of head: ");
-    scanf("%d", &h);
-    t[0] = 0;      
-    t[1] = h;      
-    printf("Enter the tracks: ");
-    for(i = 2; i < n+2; i++)
-        scanf("%d", &t[i]);
-    for(i = 0; i < n+2; i++) {
-        for(j = 0; j < (n+2)-i-1; j++) {
-            if(t[j] > t[j+1]) {
-                temp = t[j];
-                t[j] = t[j+1];
-                t[j+1] = temp;
-            }
-        }
-    }
-    for(i = 0; i < n+2; i++)
-        if(t[i] == h)
-            j = i;
-    
-    k = j;
-    p = 0;
-    while(t[j] != 0) {
-        atr[p] = t[j];
-        j--;
-        p++;
-    }
-    atr[p] = t[j];  
-    for(p = k+1; p < n+2; p++, k++)
-        atr[p] = t[k+1];
-    for(j = 0; j < n+1; j++) {
-        if(atr[j] > atr[j+1])
-            d[j] = atr[j] - atr[j+1];
-        else
-            d[j] = atr[j+1] - atr[j];
-        sum += d[j];
-    }
-    printf("\nAverage header movements: %f", (float)sum/n);
-    return 0;
+    int s;
+    char buf[4096];
+    struct sockaddr_in a = {AF_INET, htons(5035), inet_addr("127.0.0.1")};
+
+    printf("\nReady for sending...");
+    s = socket(AF_INET, SOCK_STREAM, 0);
+    connect(s, (struct sockaddr*)&a, sizeof(a));
+
+    printf("\nEnter the message to send\n\nClient: ");
+    fgets(buf, sizeof(buf), stdin);
+
+    write(s, buf, sizeof(buf));
+    printf("Serverecho:%s\n", buf);
+
+    close(s);
 }
 
 
-INPUT 
 
-Enter the no of tracks to be traversed: 5
-Enter the position of head: 50
-Enter the tracks: 95 180 34 119 11
-o/p:
-Average header movements: 46.00000078
+CN 
 
-Program 11:
-A. SEQUENTIAL FILE ALLOCATION
-#include<stdio.h>
-#include <string.h>
+Simulation 1:
 
-struct fileTable
-{ 
-char name[20]; 
-int sb, nob;
-}ft[30]; 
-void main() 
-{ 
-int i, j, n; 
-char s[20]; 
-printf("Enter no of files :"); 
-scanf("%d",&n); 
-for(i=0;i<n;i++)
-{ 
-printf("\nEnter file name %d :",i+1); 
-scanf("%s",ft[i].name); 
-printf("Enter starting block of file %d :",i+1); 
-scanf("%d",&ft[i].sb); 
-printf("Enter no of blocks in file %d :",i+1); 
-scanf("%d",&ft[i].nob); 
-} 
-printf("\nEnter the file name to be searched -- "); 
-scanf("%s",s); 
-for(i=0;i<n;i++) 
-if(strcmp(s, ft[i].name)==0)
-break; 
-if(i==n) 
-printf("\nFile Not Found"); 
-else 
-{ 
-printf("\nFILE NAME START BLOCK NO OF BLOCKS BLOCKS OCCUPIED\n"); 
-printf("\n%s\t\t%d\t\t%d\t",ft[i].name,ft[i].sb,ft[i].nob); 
-for(j=0;j<ft[i].nob;j++)
-printf("%d, ",ft[i].sb+j);
-} 
-}
-
-INPUT: Enter no of files :3 
-Enter file name 1 :A  
-Enter starting block of file 1 :85  
-Enter no of blocks in file 1 :6  
-Enter file name 2 :B  
-Enter starting block of file 2 :102 
-Enter no of blocks in file 2 :4  
-Enter file name 3 :C  
-Enter starting block of file 3 :60  
-Enter no of blocks in file 3 :4  
-Enter the file name to be searched -- B  
-OUTPUT:  
-FILE NAME     START BLOCK    NO OF BLOCKS        BLOCKS OCCUPIED 
-B                          102                         4                            102,103,104,105      
-
-B. INDEXED FILE ALLOCATION
-#include<stdio.h> 
-#include <string.h>
-
-struct fileTable 
-{ 
-char name[20];
-int nob, blocks[30];
-}ft[30]; 
-void main() 
-{ 
-int i, j, n; 
-char s[20]; 
-printf("Enter no of files :");
-scanf("%d",&n);
-for(i=0;i<n;i++)
-{ 
-printf("\nEnter file name %d :",i+1); 
-scanf("%s",ft[i].name);
-printf("Enter no of blocks in file %d :",i+1); 
-scanf("%d",&ft[i].nob); 
-printf("Enter the blocks of the file :"); 
-for(j=0;j<ft[i].nob;j++) 
-scanf("%d",&ft[i].blocks[j]);
-} 
-printf("\nEnter the file name to be searched -- "); 
-scanf("%s",s); 
-for(i=0;i<n;i++) 
-if(strcmp(s, ft[i].name)==0) 
-break; 
-if(i==n) 
-printf("\nFile Not Found"); 
-else 
-{ 
-printf("\nFILE NAME NO OF BLOCKS BLOCKS OCCUPIED"); 
-printf("\n %s\t\t%d\t",ft[i].name,ft[i].nob); 
-for(j=0;j<ft[i].nob;j++)
-printf("%d, ",ft[i].blocks[j]); 
-} 
-}
-
-INPUT:  
-Enter no of files : 2  
-Enter file 1 : A  
-Enter no of blocks in file 1 : 4  
-Enter the blocks of the file 1 : 12 23 9 4  
-
-Enter file 2 : G  
-Enter no of blocks in file 2: 5  
-Enter the blocks of the file 2: 88 77 66 55 44 
-Enter the file to be searched: G  
-OUTPUT:  
-FILE NAME       NO OF BLOCKS               BLOCKS OCCUPIED    
-G                            5                                     88, 77, 66, 55, 44 13
-   
-Prg 2: IPC
-
-a.Shared Memory for Writer Process 
-#include<stdio.h> 
-#include<stdlib.h> 
-#include<unistd.h> 
-#include<sys/shm.h> 
-#include<string.h> 
+Step 1: Click on PC0 → Desktop → IP Config →  
+IPV4 Address: 10.1.1.1 
+Subnet Mask: 255.0.0.0 
  
-int main() 
-{ 
-int i; 
-void *shared_memory; 
-char buff[100]; 
-int shmid; 
-shmid=shmget((key_t)2345, 1024, 0666|IPC_CREAT);  
-printf("Key of shared memory is %d\n",shmid); 
-shared_memory=shmat(shmid,NULL,0);  
-printf("Process attached at %p\n",shared_memory);  
-printf("Enter some data to write to shared memory\n"); 
-read(0,buff,100);
-strcpy(shared_memory,buff);
-printf("You wrote : %s\n",(char *)shared_memory); 
-} 
-Output: 
-Key of shared memory is 0 
-Process attached at x7ffe04fb000 
-Enter some data to write to shared memory 
-Hello World 
-You wrote: Hello World 
+Step 2: Click on PC1 → Desktop → IP Config →  
+IPV4 Address: 10.1.1.2 
+Subnet Mask: 255.0.0.0 
+ 
+Step 3: Click on PC2 → Desktop → IP Config → 
+IPV4 Address: 192.168.1.1 
+Subnet Mask: 255.255.255.0 
+ 
+Step 4: Click on PC3 → Desktop → IP Config → 
+IPV4 Address: 192.168.1.2 
+Subnet Mask: 255.255.255.0 
+Config done with PC 
+ 
+Step 5: Click on Router → Config → Interface → Fast Ethernet 0/0 
+IP Address: 10.1.1.3 
+Subnet Mask: 255.0.0.0 
+Enable Port Status 
+ 
+Click on → Fast Ethernet 0/1 
+IP address: 192.168.1.3  
+Subnet Mask: 255.255.0.4 
+Enable Port Status 
+ 
+Step 6: Click on PC0 → IP Configuration → Default Gateway → 10.1.1.3 
+Click on PC1 → IP Configuration → Default Gateway →10.1.1.3 
+Click on PC2 → IP Configuration → Default Gateway → 192.168.1.3 
+Click on PC3 → IP Configuration → Default Gateway → 192.168.1.3 
+ 
+Simulation: Select packets and place on PC0 and PC2 
+Auto capture 
+Successful
 
-b.Shared Memory for Reader Process 
-#include<stdio.h> 
-#include<stdlib.h> 
-#include<unistd.h> 
-#include<sys/shm.h> 
-#include<string.h> 
-int main() 
-{ 
-int i; 
-void *shared_memory; 
-char buff[100]; 
-int shmid; 
-shmid=shmget((key_t)2345, 1024, 0666); 
-printf("Key of shared memory is %d\n",shmid); 
-shared_memory=shmat(shmid,NULL,0);
-printf("Process attached at %p\n",shared_memory); 
-printf("Data read from shared memory is : %s\n",(char *)shared_memory); 
-}
-o/p:
-Key of Shared memory is 0 
-Process attached at 0x7f76b4292999 
-Data read from shared memory is: Hello World
+Simulation 2:
 
-commands:                                            
-172.31.31.20    
-UN:user24
-PW:csuser24
-vi filename.c  (create file)
-Press Insert and Type the code 
-esc:w(to save)
-esc:wq(to save and exit)
-cc filename.c(compile)
-./a.out (run)
+Step 1: Click on PC0 → Desktop → IP Config → 
+IP Address: 192.168.1.1 
+Subnet Mask: 255.255.255.0 
+ 
+Step 2: Click on PC1 → Desktop → IP Config →  
+IP Address: 192.168.1.2 
+Subnet Mask: 255.255.255.0 
+ 
+Step 3: Click on PC2 → Desktop → IP Config →  
+IP Address: 192.168.1.3 
+Subnet Mask: 255.255.255.0 
+ 
+Step 4: Click on Server → Desktop → IP Config → 
+IP Address: 192.168.1.4 
+Subnet Mask: 255.255.255.0 
+ 
+Step 5: Click on inspect button (      ) 
+Click on PC → Right click → Select ARP → ARP table for PC0 
+ 
+Simulation: Select packets and place on PC0 and PC2  
+Auto capture 
+Successful 
+
+
+Simulation 3:
+
+Step 1: Select a Server, a Switch, 2 PC’s and 2 Laptops 
+ 
+Step 2: Give the connections  
+ 
+Step 3: Click on Server → In Config select DHCP 
+Pool Name: Server pool (by default) 
+Default Gateway : 10.0.0.1 
+DNS Server: 0.0.0.0 
+Start IP address:  10     0    0    0 
+Subnet Mask    : 255    0    0    0 
+Maximum number of users : 50 
+Save 
+ 
+Step 4: Click on Server → Config → Fast Ethernet → Select IP Config as static and enter the 
+IP Address and Subnet Mask manually (10.0.0.1) → On port status 
+ 
+Step 5: Select PC0 →Desktop →IP Config →DHCP  
+Requesting IP Address → DHCP Request  
+Successful 
+Do the same for Laptop0, PC1 and Laptop1 
+[IP address and subnet Mask of all changes automatically] 
+Simulation: Go to simulation mode 
+Select a packet and place on PC0 and Laptop1   
+Auto capture 
+Successful 
+ 
+Simulation 4:
+
+Step 1: Select 2 Routers, 2 switches and 4 PC’s 
+ 
+Step 2: Give the connections 
+For Router 0 to Router 1, select the 4th connectivity [---] 
+While placing the connection, select the fast ethernet 0/1 
+ 
+Step 3: Click on PC0 → Desktop → IP Config → Static → 
+IP address: 192.168.1.2 
+Subnet Mask: 255.255.255.0 
+Default Gateway: 192.168.1.4 
+ 
+Click on PC1 → Desktop → IP Config → Static → 
+IP address: 192.168.1.3 
+Subnet Mask: 255.255.255.0 
+Default Gateway: 192.168.1.4 
+ 
+Click on PC2 → Desktop → IP Config → Static → 
+IP address: 192.168.2.2 
+Subnet Mask: 255.255.255.0 
+Default Gateway: 192.168.2.4 
+ 
+Click on PC3 → Desktop → IP Config → Static → 
+IP address: 192.168.2.3 
+Subnet Mask: 255.255.255.0 
+Default Gateway: 192.168.2.4 
+ 
+Step 4: Click on Router0 → Config → Fast Ethernet 0/0 → 
+IP address: 192.168.1.4 
+Subnet Mask: 255.255.255.0 
+Turn on the port status  
+ 
+Step 5: Click on Router0 → Config → Fast Ethernet 0/1 → 
+IP address: 192.168.3.2 
+Subnet Mask: 255.255.255.0 
+Turn on the port status  
+ 
+Step 6: Click on Router0 → Config → Fast Ethernet 0/0 → 
+IP address: 192.168.2.4 
+Subnet Mask: 255.255.255.0 
+Turn on the port status  
+ 
+Step 7: Click on Router1 → Config → Fast Ethernet 0/0 →  
+IP address: 192.168.3.3 
+Subnet Mask: 255.255.255.0 
+Turn on the port status  
+ 
+Step 8: Click on Router1 → Config → Static 
+Network: 192.168.1.0 
+Mask: 255.255.255.0 
+Next HOP: 192.168.3.2. 
+Click on add 
+Simulation: Go to simulation mode 
+Select the packets and place them on PC0 and PC1 
+Auto capture 
+Successful
+
+Simulation 5:
+
+
+Step 1: Select 3 Routers (2811) 
+ 
+Step 2: Click on Router0 → Config → Physical →Select WIC1T or WIC2T 
+Disable the green button (Right side) 
+Drag and drop the WIC 2T 2 times into the box 
+Enable the green button 
+Repeat the same steps for the other Routers 
+ 
+Step 3: Select 3 PC’s and give the connections to Routers and PC’s 
+ 
+Step 4: Click on PC0 → Desktop → IP Config → Static   
+IP address: 192.168.1.1 
+Subnet Mask: 255.255.255.0 
+Default Gateway: 192.168.1.2 
+ 
+Step 5: Click on PC1 → Desktop → IP Config → Static   
+IP address: 192.168.2.1 
+Subnet Mask: 255.255.255.0 
+Default Gateway: 192.168.2.2 
+ 
+Step 6: Click on PC2 → Desktop → IP Config → Static   
+IP address: 192.168.3.1 
+Subnet Mask: 255.255.255.0 
+Default Gateway: 192.168.3.2 
+ 
+Step 7: [ Based on the respective fast ethernet and serial numbers in your system, provide the 
+IP’s ] 
+Click on Router 0 → Config → Interface   
+Fast Ethernet 0/0: 
+IP Address: 192.168.1.2 
+Subnet Mask: 255.255.255.0 
+Turn on Port status 
+Serial 0/3/1: 
+IP Address: 10.10.10.2 
+Subnet Mask: 255.0.0.0 
+Turn on Port status 
+Serial 0/3/0: 
+IP Address: 20.20.20.1 
+Subnet Mask: 255.0.0.0 
+Turn on Port status  
+Repeat the same process for Router1 and Router2  (For IP’s, look at the diagram) 
+Make sure all the red dots on the connection turns green 
+ 
+Step 6: Click on the Router0 → Config → RIP 
+Network: 192.168.1.2 → Add  
+                10.10.10.2 → Add 
+                20.20.20.1 →  Add 
+(Add the respective IP’s of the Router) 
+Repeat the same steps for Router1 and Router2 
+  
+Simulation: Go to simulation mode 
+Edit Event list filters → Select only ICMP 
+Select the packets and place on PC’s 
+Auto capture 
+Successful
+
+
+Simulation 6:
+
+Step 1: Select 3 Routers (2811) 
+ 
+Step 2: Click on Router0 → Config → Physical → Select WIC1T or WIC2T 
+Disable the green button (Right side) 
+Drag and drop the WIC 2T 2 times into the box 
+Enable the green button 
+Repeat the same steps for the other Routers 
+ 
+Step 3: Select 3 PC’s and give the connections to Routers and PC’s 
+ 
+Step 4: Click on PC0 → Desktop → IP Config → Static   
+IP address: 192.168.1.1 
+Subnet Mask: 255.255.255.0 
+Default Gateway: 192.168.1.2 
+ 
+Step 5: Click on PC1 → Desktop → IP Config → Static   
+IP address: 192.168.2.1 
+Subnet Mask: 255.255.255.0 
+Default Gateway: 192.168.2.2 
+ 
+Step 6: Click on PC2 → Desktop → IP Config → Static   
+IP address: 192.168.3.1 
+Subnet Mask: 255.255.255.0 
+Default Gateway: 192.168.3.2 
+ 
+Step 7: [ Based on the respective fast ethernet and serial numbers in your system, provide the 
+IP’s ] 
+Click on Router 0 → Config → Interface   
+Fast Ethernet 0/0: 
+IP Address: 192.168.1.2 
+Subnet Mask: 255.255.255.0 
+Turn on Port status 
+Serial 0/3/1: 
+IP Address: 10.10.10.2 
+Subnet Mask: 255.0.0.0 
+Turn on Port status 
+Serial 0/3/0: 
+IP Address: 20.20.20.1 
+Subnet Mask: 255.0.0.0 
+Turn on Port status  
+Repeat the same process for Router1 and Router2  (For IP’s, look at the diagram) 
+Make sure all the red dots on the connection turns green 
+ 
+Step 6: Click on Router 0 → CL I 
+Router > enable 
+Router# configure terminal 
+Router(config)#router ospf 3 
+Router(config-router)#network 192.168.1.0 0.0.0.255 area 0 
+Router(config-router)#network 10.0.0.0 0.255.255.255 area 0 
+Router(config-router)#network 20.0.0.0 0.255.255.255 area 0 
+Router(config-router)#exit 
+Router(config)#exit 
+ 
+Click on Router1 → CLI 
+Router > enable 
+Router# configure terminal 
+Router(config)#router ospf 3 
+Router(config-router)#network 192.168.2.0 0.0.0.255 area 0 
+Router(config-router)#network 20.0.0.0 0.255.255.255 area 0 
+Router(config-router)#network 30.0.0.0 0.255.255.255 area 0 
+Router(config-router)#exit 
+Router(config)#exit 
+ 
+Click on Router2 → CLI 
+Router > enable 
+Router# configure terminal 
+Router(config)#router ospf 3 
+Router(config-router)#network 192.168.3.0 0.0.0.255 area 0 
+Router(config-router)#network 10.0.0.0 0.255.255.255 area 0 
+Router(config-router)#network 30.0.0.0 0.255.255.255 area 0 
+Router(config-router)#exit 
+Router(config)#exit 
+ 
+Simulation: Go to simulation mode 
+Event List → Edit Filters → Select only ICMP 
+Select the packets and place on PC’s 
+Auto Capture 
+Successful
+
+Simulation 7:
+
+Step 1: Select 2 PC’s, 2 Servers and a Switch 
+ 
+Step 2: Give the connections 
+ 
+Step 3: Click on PC0 → Desktop → IP Config 
+IP Address: 192.168.1.1 
+Subnet Mask: 255.255.255.0 
+Default Gateway: 192.1681.3 
+ 
+Step 4: Click on PC1 → Desktop → IP Config 
+IP Address: 192.168.1.2 
+Subnet Mask: 255.255.255.0 
+Default Gateway: 192.1681.3 
+ 
+Step 5: Click on Server0 (WEB Server) → Desktop 
+IP Address: 192.168.1.4 
+Subnet Mask: 255.255.255.0 
+ 
+Click on Server1 (DNS Server) → Desktop 
+IP Address: 192.168.1.3 
+Subnet Mask: 255.255.255.0 
+ 
+Step 6: Click on WEB Server → Config → HTTP 
+Modify the HTML code 
+ 
+Step 7: Click on DNS Server → Config → DNS 
+Turn on DNS Service 
+Name: www.abc.com 
+IP Address: 192.168.1.4 (IP Address of WEB Server) 
+Add 
+ 
+Step 8: Click on PC0 → Desktop → Web Browser → URL → www.abc.com → Go 
